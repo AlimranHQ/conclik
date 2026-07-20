@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.env
+
+contentpilot.db
+
+.vscode/
+.idea/
