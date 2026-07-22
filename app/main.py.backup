@@ -3,22 +3,19 @@ from pydantic import BaseModel
 
 from app.database import Base, engine
 from app.routers import auth, profile
-from app.routers.ai import router as ai_router
-from app import seo_router
+from app.ai_router import ai_router
 from app.ai_services import ai_engine
-
+from app import seo_router
 
 # Database
 Base.metadata.create_all(bind=engine)
 
-
-# FastAPI Application
+# FastAPI App
 app = FastAPI(
     title="ContentPilot AI",
     version="3.0.0",
-    description="Production Ready Multi-AI Platform",
+    description="Multi-AI Content Generation Platform"
 )
-
 
 # Routers
 app.include_router(auth.router)
@@ -26,38 +23,37 @@ app.include_router(profile.router)
 app.include_router(ai_router)
 app.include_router(seo_router.router)
 
-
-# Request Schema
+# Request Model
 class ContentRequest(BaseModel):
     prompt: str
     category: str = "general"
 
 
-# Home API
+# Home
 @app.get("/")
 def home():
     return {
         "app": "ContentPilot AI",
         "version": "3.0.0",
         "status": "Running Successfully",
-        "developer": "AlimranHQ",
+        "developer": "AlimranHQ"
     }
 
 
-# Legacy AI Endpoint
+# AI Generator
 @app.post("/generate")
 def generate_content(request: ContentRequest):
     return ai_engine.generate_content(
         prompt=request.prompt,
-        category=request.category,
+        category=request.category
     )
 
 
-# Health Check
+# Health
 @app.get("/health")
 def health():
     return {
         "status": "OK",
         "server": "ContentPilot AI Backend",
-        "ai_engine": "Ready",
+        "ai_engine": "Ready"
     }
