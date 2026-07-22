@@ -8,10 +8,12 @@ class YouTubeService:
 
         prompt = youtube_prompt(topic)
 
-        return ai_engine.generate_content(
+        result = ai_engine.generate_content(
             prompt=prompt,
-            category="youtube"
+            category="youtube",
         )
+
+        return result
 
 
 youtube_service = YouTubeService()

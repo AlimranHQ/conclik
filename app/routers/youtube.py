@@ -5,7 +5,7 @@ from app.services.youtube_service import youtube_service
 
 router = APIRouter(
     prefix="/youtube",
-    tags=["YouTube AI"]
+    tags=["YouTube AI"],
 )
 
 
@@ -18,3 +18,4 @@ def generate(request: YouTubeRequest):
     return youtube_service.generate(
         topic=request.topic
     )
+
