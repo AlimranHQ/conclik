@@ -8,17 +8,20 @@ from app.routers.ai import router as ai_router
 from app.routers.youtube import router as youtube_router
 from app.routers.thumbnail import router as thumbnail_router
 from app.routers.analysis import router as analysis_router
-from app.seo_router import router as seo_router
+from app.routers.research import router as research_router
+from app.routers.script import router as script_router
+from app.routers.scene import router as scene_router
 
+from app.seo_router import router as seo_router
 from app.ai_services import ai_engine
 
 # Database
 Base.metadata.create_all(bind=engine)
 
-# FastAPI App
+# FastAPI Application
 app = FastAPI(
     title="ContentPilot AI",
-    version="3.3.0",
+    version="3.6.0",
     description="Enterprise AI Content Operating System",
 )
 
@@ -30,6 +33,9 @@ app.include_router(seo_router)
 app.include_router(youtube_router)
 app.include_router(thumbnail_router)
 app.include_router(analysis_router)
+app.include_router(research_router)
+app.include_router(script_router)
+app.include_router(scene_router)
 
 
 class ContentRequest(BaseModel):
@@ -41,7 +47,7 @@ class ContentRequest(BaseModel):
 def home():
     return {
         "app": "ContentPilot AI",
-        "version": "3.3.0",
+        "version": "3.6.0",
         "status": "Running Successfully",
         "developer": "AlimranHQ",
     }
@@ -61,5 +67,5 @@ def health():
         "status": "OK",
         "database": "Connected",
         "ai_engine": "Ready",
-        "version": "3.3.0",
+        "version": "3.6.0",
     }
