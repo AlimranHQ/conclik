@@ -1,35 +1,34 @@
-from app.core.workflow import workflow_engine
+"""
+Conclik v5.1
+AI Director
+"""
+
+from app.pipeline.pipeline_manager import pipeline_manager
 
 
 class Director:
 
-    def build(self):
+    def execute(self, prompt: str):
 
-        workflow_engine.clear()
+        workflow = [
+            "research",
+            "script",
+            "seo",
+            "thumbnail",
+            "qa",
+        ]
 
-        workflow_engine.add_step("Research")
+        results = {}
 
-        workflow_engine.add_step("Fact Check")
+        for agent in workflow:
+            results[agent] = pipeline_manager.run(
+                {
+                    "agent": agent,
+                    "prompt": prompt,
+                }
+            )
 
-        workflow_engine.add_step("Script")
-
-        workflow_engine.add_step("Scene")
-
-        workflow_engine.add_step("Image Prompt")
-
-        workflow_engine.add_step("Video Prompt")
-
-        workflow_engine.add_step("Voice")
-
-        workflow_engine.add_step("Subtitle")
-
-        workflow_engine.add_step("SEO")
-
-        workflow_engine.add_step("Thumbnail")
-
-        workflow_engine.add_step("Export")
-
-        return workflow_engine.run()
+        return results
 
 
 director = Director()
