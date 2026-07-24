@@ -74,3 +74,9 @@ def health():
         "gateway": "Enabled",
         "gemini": "Integrated"
     }
+
+from app.routers.agent_router import router as agent_router
+try:
+    app.include_router(agent_router)
+except Exception as e:
+    pass
