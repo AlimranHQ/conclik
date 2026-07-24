@@ -1,3 +1,8 @@
+"""
+Conclik Pilot AI
+Version : 4.3.0
+"""
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -11,23 +16,29 @@ from app.routers.analysis import router as analysis_router
 from app.routers.research import router as research_router
 from app.routers.script import router as script_router
 from app.routers.scene import router as scene_router
+from app.routers.director import router as director_router
+from app.routers.orchestrator import router as orchestrator_router
+from app.routers.project import router as project_router
+from app.routers.workflow import router as workflow_router
+from app.routers.memory import router as memory_router
+from app.routers.decision import router as decision_router
 
 from app.seo_router import router as seo_router
 from app.ai_services import ai_engine
 
-# Database
 Base.metadata.create_all(bind=engine)
 
-# FastAPI Application
 app = FastAPI(
-    title="ContentPilot AI",
-    version="3.6.0",
+    title="Conclik Pilot AI",
+    version="4.3.0",
     description="Enterprise AI Content Operating System",
 )
 
-# Routers
+# Core
 app.include_router(auth.router)
 app.include_router(profile.router)
+
+# AI
 app.include_router(ai_router)
 app.include_router(seo_router)
 app.include_router(youtube_router)
@@ -36,6 +47,16 @@ app.include_router(analysis_router)
 app.include_router(research_router)
 app.include_router(script_router)
 app.include_router(scene_router)
+
+# Enterprise
+app.include_router(director_router)
+app.include_router(orchestrator_router)
+app.include_router(project_router)
+app.include_router(workflow_router)
+
+# AI Brain
+app.include_router(memory_router)
+app.include_router(decision_router)
 
 
 class ContentRequest(BaseModel):
@@ -46,15 +67,16 @@ class ContentRequest(BaseModel):
 @app.get("/")
 def home():
     return {
-        "app": "ContentPilot AI",
-        "version": "3.6.0",
-        "status": "Running Successfully",
+        "brand": "Conclik",
+        "product": "Conclik Pilot AI",
+        "version": "4.3.0",
+        "status": "Running",
         "developer": "AlimranHQ",
     }
 
 
 @app.post("/generate")
-def generate_content(request: ContentRequest):
+def generate(request: ContentRequest):
     return ai_engine.generate_content(
         prompt=request.prompt,
         category=request.category,
@@ -66,6 +88,6 @@ def health():
     return {
         "status": "OK",
         "database": "Connected",
-        "ai_engine": "Ready",
-        "version": "3.6.0",
+        "engine": "Ready",
+        "version": "4.3.0",
     }
