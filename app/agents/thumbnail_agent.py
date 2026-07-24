@@ -1,19 +1,38 @@
-import logging
-from typing import Dict, Any
-from app.providers.gemini_client import GeminiClient
+"""
+Conclik Pilot AI - Thumbnail Agent
+Version: 5.0.0
+Description: Generates high-CTR thumbnail concepts, visual ideas, and image prompts.
+"""
 
-logger = logging.getLogger(__name__)
+import google.generativeai as genai
+from app.providers.gemini_client import gemini_client
 
 class ThumbnailAgent:
-    def __init__(self):
-        self.client = GeminiClient()
-        self.system_prompt = "You are an expert Thumbnail & Visual Agent. You create high-CTR thumbnail concepts and image prompts."
+    async def design_concept(self, topic: str, research_data: str, script_data: str) -> str:
+        prompt = f"""
+        You are an expert YouTube Thumbnail Designer and Visual Strategist. Your task is to design high-CTR thumbnail concepts based on the provided topic, research, and script.
+        
+        Topic: {topic}
+        
+        Research Summary:
+        {research_data}
 
-    async def generate_thumbnail_ideas(self, title: str, script_summary: str) -> Dict[str, Any]:
+        Script Content:
+        {script_data}
+
+        Please provide:
+        1. Thumbnail Visual Concepts (Provide 2-3 distinct design ideas with descriptions of imagery, background, and focal points).
+        2. Catchy On-Image Text / Overlay (Short, punchy 2-4 words text to grab attention).
+        3. Color Palette Suggestions (High contrast colors to stand out).
+        4. AI Image Generation Prompt (A detailed descriptive prompt if someone wants to generate it via DALL-E or Midjourney).
+
+        Keep the output creative, structured, and practical.
+        """
+        
         try:
-            prompt = f"Title: {title}\nSummary: {script_summary}\n\nProvide 3 high-CTR YouTube thumbnail concepts, visual elements, text overlays, and AI image generation prompts."
-            response = await self.client.generate_content(prompt, system_instruction=self.system_prompt)
-            return {"status": "success", "thumbnail_data": response}
+            response = await gemini_client.generate_content(prompt)
+            return response
         except Exception as e:
-            logger.error(f"Error in ThumbnailAgent: {str(e)}")
-            return {"status": "error", "message": str(e)}
+            raise Exception(f"Thumbnail Agent Error: {str(e)}")
+
+thumbnail_agent = ThumbnailAgent()

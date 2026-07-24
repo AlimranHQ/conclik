@@ -1,46 +1,38 @@
-import logging
-from typing import Dict, Any
-from app.providers.gemini_client import GeminiClient
+"""
+Conclik Pilot AI - SEO Agent
+Version: 5.0.0
+Description: Generates optimized SEO titles, descriptions, tags, and hashtags.
+"""
 
-logger = logging.getLogger(__name__)
+import google.generativeai as genai
+from app.providers.gemini_client import gemini_client
 
 class SEOAgent:
-    def __init__(self):
-        self.client = GeminiClient()
-        self.system_prompt = (
-            "You are an expert SEO Agent in the Conclik AI multi-agent system. "
-            "Your job is to optimize content for search engines, generate high-ranking keywords, "
-            "compelling meta titles, and meta descriptions."
-        )
+    async def optimize(self, topic: str, research_data: str, script_data: str) -> str:
+        prompt = f"""
+        You are an expert YouTube and Content SEO Specialist. Your task is to generate high-performing SEO metadata based on the provided topic, research, and script.
+        
+        Topic: {topic}
+        
+        Research Summary:
+        {research_data}
 
-    async def optimize_content(self, title: str, content: str) -> Dict[str, Any]:
+        Script Content:
+        {script_data}
+
+        Please provide:
+        1. Catchy & High-CTR Video Titles (Provide 3 options).
+        2. SEO-Optimized Video Description (With timestamps placeholder and keywords).
+        3. Relevant Tags (Comma-separated for search ranking).
+        4. Trending Hashtags (Top 5-10 hashtags).
+
+        Keep the output structured, clean, and ready to use.
         """
-        Optimizes content for SEO and generates metadata.
-        """
+        
         try:
-            prompt = (
-                f"Content Title: {title}\n"
-                f"Content Body: {content[:1000]}...\n\n"
-                "Please provide:\n"
-                "1. SEO Optimized Meta Title\n"
-                "2. Catchy Meta Description\n"
-                "3. Primary and Secondary Keywords\n"
-                "4. SEO Recommendations"
-            )
-
-            response = await self.client.generate_content(
-                prompt=prompt,
-                system_instruction=self.system_prompt
-            )
-
-            return {
-                "status": "success",
-                "title": title,
-                "seo_data": response
-            }
+            response = await gemini_client.generate_content(prompt)
+            return response
         except Exception as e:
-            logger.error(f"Error in SEOAgent: {str(e)}")
-            return {
-                "status": "error",
-                "message": str(e)
-            }
+            raise Exception(f"SEO Agent Error: {str(e)}")
+
+seo_agent = SEOAgent()

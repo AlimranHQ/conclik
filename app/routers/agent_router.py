@@ -1,23 +1,21 @@
+"""
+Conclik Pilot AI - Agent Router
+Version: 5.0.0
+"""
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from app.agents.orchestrator import MultiAgentOrchestrator
+from app.services.pipeline_service import pipeline_service
 
-router = APIRouter(prefix="/agents", tags=["Multi-Agent System"])
-orchestrator = MultiAgentOrchestrator()
+router = APIRouter(prefix="/agents", tags=["Multi-Agent Pipeline"])
 
-class TopicRequest(BaseModel):
+class PipelineRequest(BaseModel):
     topic: str
-    tone: str = "Engaging"
 
 @router.post("/run-pipeline")
-async def run_multi_agent_pipeline(request: TopicRequest):
-    """
-    Executes the complete v5.0 Multi-Agent Pipeline (Research to QA).
-    """
+async def run_pipeline(request: PipelineRequest):
     try:
-        result = await orchestrator.run_pipeline(topic=request.topic, tone=request.tone)
-        if result.get("status") == "error":
-            raise HTTPException(status_code=500, detail=result.get("message"))
+        result = await pipeline_service.run_pipeline(request.topic)
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

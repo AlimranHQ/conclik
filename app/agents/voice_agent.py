@@ -1,19 +1,35 @@
-import logging
-from typing import Dict, Any
-from app.providers.gemini_client import GeminiClient
+"""
+Conclik Pilot AI - Voice Agent
+Version: 5.0.0
+Description: Generates voiceover guidelines, voice tones, pacing, and audio-friendly script cues.
+"""
 
-logger = logging.getLogger(__name__)
+import google.generativeai as genai
+from app.providers.gemini_client import gemini_client
 
 class VoiceAgent:
-    def __init__(self):
-        self.client = GeminiClient()
-        self.system_prompt = "You are an expert Voice & Audio Agent. You optimize text-to-speech pacing, emotional tone markers, and voice direction."
+    async def create_voice_guideline(self, topic: str, script_data: str) -> str:
+        prompt = f"""
+        You are an expert Voiceover Director and Audio Content Producer. Your task is to design professional voiceover guidelines and pacing instructions based on the provided script.
+        
+        Topic: {topic}
 
-    async def optimize_for_voice(self, script: str) -> Dict[str, Any]:
+        Script Content:
+        {script_data}
+
+        Please provide:
+        1. Recommended Voice Tone & Mood (e.g., energetic, professional, emotional, authoritative).
+        2. Speaking Pacing & Tempo (Where to speed up, slow down, or pause for dramatic effect).
+        3. Pronunciation and Emphasis Cues (Keywords or terms that need special vocal stress).
+        4. Audio/Sound Effects (SFX) & Background Music suggestions to enhance the listening experience.
+
+        Keep the output structured, clear, and professional.
+        """
+        
         try:
-            prompt = f"Script:\n{script}\n\nOptimize this script for Text-to-Speech (TTS) by adding audio pauses [pause], emotional cues, and voice modulation markers."
-            response = await self.client.generate_content(prompt, system_instruction=self.system_prompt)
-            return {"status": "success", "voice_script": response}
+            response = await gemini_client.generate_content(prompt)
+            return response
         except Exception as e:
-            logger.error(f"Error in VoiceAgent: {str(e)}")
-            return {"status": "error", "message": str(e)}
+            raise Exception(f"Voice Agent Error: {str(e)}")
+
+voice_agent = VoiceAgent()

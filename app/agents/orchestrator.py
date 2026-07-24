@@ -27,9 +27,9 @@ class MultiAgentOrchestrator:
         try:
             logger.info(f"Starting Multi-Agent Pipeline for topic: {topic}")
 
-            # Step 1: Research
-            research_res = await self.research_agent.run(topic)
-            research_text = research_res if isinstance(research_res, str) else str(research_res)
+            # Step 1: Research (Fixed method call)
+            research_res = await self.research_agent.execute_research(topic=topic)
+            research_text = research_res.get("research_data", "") if isinstance(research_res, dict) else str(research_res)
 
             # Step 2: Script Generation
             script_res = await self.script_agent.generate_script(topic=topic, research_data=research_text, tone=tone)

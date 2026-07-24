@@ -1,44 +1,33 @@
-import logging
-from typing import Dict, Any
-from app.providers.gemini_client import GeminiClient
+"""
+Conclik Pilot AI - Script Agent
+Version: 5.0.0
+"""
 
-logger = logging.getLogger(__name__)
+import google.generativeai as genai
+from app.providers.gemini_client import gemini_client
 
 class ScriptAgent:
-    def __init__(self):
-        self.client = GeminiClient()
-        self.system_prompt = (
-            "You are an expert Script Agent in the Conclik AI multi-agent system. "
-            "Your job is to write engaging, high-retention scripts, blog posts, or copy "
-            "based on the provided research data and topic."
-        )
+    async def generate_script(self, topic: str, research_data: str) -> str:
+        prompt = f"""
+        You are an expert Video Script Writer. Your task is to write an engaging, high-retention script based on the provided research.
+        Topic: {topic}
+        
+        Research Insights:
+        {research_data}
 
-    async def generate_script(self, topic: str, research_data: str = "", tone: str = "Engaging") -> Dict[str, Any]:
+        Please structure the script with:
+        1. Hook (0-5 seconds): Catchy opening to grab attention.
+        2. Introduction: Briefly introduce what will be covered.
+        3. Body Content: Main talking points broken down smoothly.
+        4. Call to Action (CTA) & Outro: Engaging closing.
+
+        Keep the tone natural, professional, and conversational.
         """
-        Generates a professional script or content based on research data.
-        """
+        
         try:
-            prompt = (
-                f"Topic: {topic}\n"
-                f"Tone: {tone}\n"
-                f"Research Insights: {research_data}\n\n"
-                "Please write a comprehensive, well-structured script or content piece with a strong hook, "
-                "informative body sections, and a clear call-to-action (CTA)."
-            )
-
-            response = await self.client.generate_content(
-                prompt=prompt,
-                system_instruction=self.system_prompt
-            )
-
-            return {
-                "status": "success",
-                "topic": topic,
-                "script": response
-            }
+            response = await gemini_client.generate_content(prompt)
+            return response
         except Exception as e:
-            logger.error(f"Error in ScriptAgent: {str(e)}")
-            return {
-                "status": "error",
-                "message": str(e)
-            }
+            raise Exception(f"Script Agent Error: {str(e)}")
+
+script_agent = ScriptAgent()
