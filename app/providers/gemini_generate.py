@@ -1,14 +1,13 @@
 """
 Conclik Pilot AI
 Version : 4.8.1
-Official Gemini SDK
-Production Ready
+Gemini Generate Provider
 """
 
 import os
 
+import google.generativeai as genai
 from dotenv import load_dotenv
-from google import genai
 
 from app.core.model_selector import model_selector
 
@@ -18,26 +17,18 @@ load_dotenv()
 class GeminiGenerate:
 
     def __init__(self):
-        self.client = genai.Client(
-            api_key=os.getenv("GEMINI_API_KEY")
-        )
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        self.model = genai.GenerativeModel(model_selector.gemini())
 
     def generate(self, prompt: str):
 
         try:
-            response = self.client.models.generate_content(
-                model=model_selector.gemini(),
-                contents=prompt,
-            )
-
+            response = self.model.generate_content(prompt)
             return response.text
 
         except Exception:
-            response = self.client.models.generate_content(
-                model=model_selector.fallback(),
-                contents=prompt,
-            )
-
+            fallback = genai.GenerativeModel(model_selector.fallback())
+            response = fallback.generate_content(prompt)
             return response.text
 
 
