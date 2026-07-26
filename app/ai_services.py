@@ -4,10 +4,8 @@ import httpx
 from app.config import settings
 
 
-class AIEng ine:
-
+class AIEngine:
     def __init__(self):
-
         self.gemini = None
 
         if settings.GEMINI_API_KEY:
@@ -15,20 +13,11 @@ class AIEng ine:
             self.gemini = genai.GenerativeModel("gemini-2.0-flash")
 
     def _gemini(self, prompt):
-
         if not self.gemini:
             return None
 
         try:
-
-<<<<<<< HEAD
             response = self.gemini.generate_content(prompt)
-=======
-            response = self.gemini.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=prompt
-            )
->>>>>>> b7d3ff9 (Fix Gemini SDK and add httpx)
 
             return {
                 "success": True,
@@ -40,12 +29,10 @@ class AIEng ine:
             return None
 
     def _openrouter(self, prompt):
-
         if not settings.OPENROUTER_API_KEY:
             return None
 
         try:
-
             headers = {
                 "Authorization": f"Bearer {settings.OPENROUTER_API_KEY}",
                 "Content-Type": "application/json"
@@ -80,12 +67,10 @@ class AIEng ine:
             return None
 
     def _groq(self, prompt):
-
         if not settings.GROQ_API_KEY:
             return None
 
         try:
-
             headers = {
                 "Authorization": f"Bearer {settings.GROQ_API_KEY}",
                 "Content-Type": "application/json"
@@ -120,7 +105,6 @@ class AIEng ine:
             return None
 
     def generate_content(self, prompt, category="general"):
-
         result = self._openrouter(prompt)
 
         if result:
