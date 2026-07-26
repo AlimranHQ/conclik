@@ -21,7 +21,14 @@ class AIEng ine:
 
         try:
 
+<<<<<<< HEAD
             response = self.gemini.generate_content(prompt)
+=======
+            response = self.gemini.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt
+            )
+>>>>>>> b7d3ff9 (Fix Gemini SDK and add httpx)
 
             return {
                 "success": True,
