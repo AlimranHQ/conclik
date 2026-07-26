@@ -9,3 +9,4 @@ python-jose
 python-multipart
 psycopg2-binary
 google-genai
+email-validator
