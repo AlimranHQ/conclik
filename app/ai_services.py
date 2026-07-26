@@ -1,4 +1,4 @@
-from google import genai
+import google.generativeai as genai
 import httpx
 
 from app.config import settings
@@ -11,9 +11,8 @@ class AIEngine:
         self.gemini = None
 
         if settings.GEMINI_API_KEY:
-            self.gemini = genai.Client(
-                api_key=settings.GEMINI_API_KEY
-            )
+            genai.configure(api_key=settings.GEMINI_API_KEY)
+            self.gemini = genai.GenerativeModel("gemini-2.0-flash")
 
     def _gemini(self, prompt):
 
@@ -22,10 +21,7 @@ class AIEngine:
 
         try:
 
-            response = self.gemini.models.generate_content(
-                model="gemini-2.0-flash",
-                contents=prompt
-            )
+            response = self.gemini.generate_content(prompt)
 
             return {
                 "success": True,
@@ -34,7 +30,6 @@ class AIEngine:
             }
 
         except Exception:
-
             return None
 
     def _openrouter(self, prompt):
@@ -75,7 +70,6 @@ class AIEngine:
             }
 
         except Exception:
-
             return None
 
     def _groq(self, prompt):
@@ -116,7 +110,6 @@ class AIEngine:
             }
 
         except Exception:
-
             return None
 
     def generate_content(self, prompt, category="general"):
