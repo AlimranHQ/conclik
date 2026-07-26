@@ -4,7 +4,7 @@ import httpx
 from app.config import settings
 
 
-class AIEngine:
+class AIEng ine:
 
     def __init__(self):
 
