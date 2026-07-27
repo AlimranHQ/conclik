@@ -1,22 +1,17 @@
 """
 Conclik Pilot AI
-Version : 4.7.2
+Version : 5.2.0
 Module : Gemini Generate Service
 """
 
-from app.providers.gemini_generate import (
-    gemini_generate,
-)
+from app.providers.gemini_client import gemini_client
 
 
 class GeminiGenerateService:
 
-    def generate(
-        self,
-        prompt: str,
-    ):
+    def generate(self, prompt: str):
 
-        return gemini_generate.generate(prompt)
+        return gemini_client.generate_content(prompt)
 
 
 gemini_generate_service = GeminiGenerateService()
