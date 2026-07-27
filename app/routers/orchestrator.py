@@ -1,13 +1,13 @@
 """
 Conclik Pilot AI
-Version : 4.0.0
+Version : 5.2.0
 Module  : Orchestrator Router
 """
 
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from app.services.orchestrator_service import orchestrator_service
+from app.core.orchestrator import orchestrator
 
 router = APIRouter(
     prefix="/orchestrator",
@@ -21,4 +21,4 @@ class ProjectRequest(BaseModel):
 
 @router.post("/create")
 def create_project(request: ProjectRequest):
-    return orchestrator_service.create(request.prompt)
+    return orchestrator.create_project(request.prompt)
