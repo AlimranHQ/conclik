@@ -1,17 +1,17 @@
 """
 Conclik Pilot AI
-Version : 4.0.0
+Version : 5.2.0
 Module  : AI Orchestrator
 """
 
-from app.services.director_service import director_service
+from app.core.director import director
 
 
 class AIOrchestrator:
 
     def create_project(self, prompt: str):
 
-        workflow = director_service.create_workflow()
+        workflow = director.execute(prompt)
 
         return {
             "success": True,
