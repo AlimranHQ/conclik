@@ -1,12 +1,11 @@
 """
 Conclik Pilot AI
-Version : 4.7.0
+Version : 5.2.0
 Module : Gemini Router
 """
 
 from fastapi import APIRouter
-
-from app.services.gemini_service import gemini_service
+from app.providers.gemini_client import gemini_client
 
 router = APIRouter(
     prefix="/gemini",
@@ -16,4 +15,4 @@ router = APIRouter(
 
 @router.get("/status")
 def status():
-    return gemini_service.status()
+    return gemini_client.info()
