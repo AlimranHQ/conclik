@@ -1,10 +1,11 @@
 """
 Conclik Pilot AI
-Version : 4.4.0
-Module : Gemini Provider
+Version : 5.2.0
+Unified Gemini Provider
 """
 
 from app.providers.base_provider import BaseProvider
+from app.providers.gemini_client import gemini_client
 
 
 class GeminiProvider(BaseProvider):
@@ -13,8 +14,8 @@ class GeminiProvider(BaseProvider):
 
         return {
             "provider": "Gemini",
-            "prompt": prompt,
-            "status": "ready"
+            "content": gemini_client.generate(prompt),
+            "status": "success",
         }
 
 
