@@ -3,7 +3,6 @@ Conclik Pilot AI - Research Agent
 Version: 5.0.0
 """
 
-import google.generativeai as genai
 from app.providers.gemini_client import gemini_client
 
 class ResearchAgent:

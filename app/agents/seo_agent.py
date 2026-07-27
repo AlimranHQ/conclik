@@ -4,7 +4,6 @@ Version: 5.0.0
 Description: Generates optimized SEO titles, descriptions, tags, and hashtags.
 """
 
-import google.generativeai as genai
 from app.providers.gemini_client import gemini_client
 
 class SEOAgent:

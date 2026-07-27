@@ -4,7 +4,6 @@ Version: 5.0.0
 Description: Generates scene-by-scene storyboards, B-Roll ideas, and video editing guidelines.
 """
 
-import google.generativeai as genai
 from app.providers.gemini_client import gemini_client
 
 class VideoAgent:

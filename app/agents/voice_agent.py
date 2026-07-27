@@ -4,7 +4,6 @@ Version: 5.0.0
 Description: Generates voiceover guidelines, voice tones, pacing, and audio-friendly script cues.
 """
 
-import google.generativeai as genai
 from app.providers.gemini_client import gemini_client
 
 class VoiceAgent:

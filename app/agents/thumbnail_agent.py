@@ -4,7 +4,6 @@ Version: 5.0.0
 Description: Generates high-CTR thumbnail concepts, visual ideas, and image prompts.
 """
 
-import google.generativeai as genai
 from app.providers.gemini_client import gemini_client
 
 class ThumbnailAgent:
