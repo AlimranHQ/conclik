@@ -14,7 +14,6 @@ from app.routers.analysis import router as analysis_router
 from app.routers.content_studio import router as content_studio_router
 from app.routers.decision import router as decision_router
 from app.routers.director import router as director_router
-from app.routers.gateway import router as gateway_router
 from app.routers.gemini import router as gemini_router
 from app.routers.gemini_connection import router as gemini_connection_router
 from app.routers.gemini_generate import router as gemini_generate_router
@@ -48,7 +47,6 @@ routers = [
     content_studio_router,
     decision_router,
     director_router,
-    gateway_router,
     gemini_router,
     gemini_connection_router,
     gemini_generate_router,
@@ -71,16 +69,11 @@ routers = [
 for r in routers:
     app.include_router(r)
 
+
 @app.get("/")
 def home():
     return {
         "project": "Conclik Pilot AI",
         "version": "5.0.0",
         "status": "running"
-    }
-
-@app.get("/health")
-def health():
-    return {
-        "status": "ok"
     }

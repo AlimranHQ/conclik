@@ -12,13 +12,12 @@ router = APIRouter(
 class AIRequest(BaseModel):
     prompt: str
     category: str = "general"
-    provider: str = "auto"
 
 
 @router.post("/generate")
-def generate(request: AIRequest):
-    return ai_service.generate(
+async def generate(request: AIRequest):
+
+    return await ai_service.generate(
         prompt=request.prompt,
         category=request.category,
-        provider=request.provider,
     )

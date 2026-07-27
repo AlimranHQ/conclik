@@ -1,18 +1,22 @@
-from app.ai_services import ai_engine
+"""
+Conclik Pilot AI
+Version : 5.2.0
+AI Service
+"""
+
+from app.providers.gemini_client import gemini_client
 
 
 class AIService:
 
-    def generate(
+    async def generate(
         self,
         prompt: str,
         category: str = "general",
-        provider: str = "auto"
     ):
-        return ai_engine.generate_content(
+        return await gemini_client.generate_content(
             prompt=prompt,
             category=category,
-            provider=provider
         )
 
 

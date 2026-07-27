@@ -1,19 +1,22 @@
+"""
+Conclik Pilot AI
+Thumbnail Service
+"""
+
 from app.prompts.thumbnail_prompt import thumbnail_prompt
-from app.ai_services import ai_engine
+from app.providers.gemini_client import gemini_client
 
 
 class ThumbnailService:
 
-    def generate(self, topic: str):
+    async def generate(self, topic: str):
 
         prompt = thumbnail_prompt(topic)
 
-        result = ai_engine.generate_content(
+        return await gemini_client.generate_content(
             prompt=prompt,
             category="thumbnail",
         )
-
-        return result
 
 
 thumbnail_service = ThumbnailService()

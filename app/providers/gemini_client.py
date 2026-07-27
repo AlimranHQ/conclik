@@ -16,34 +16,32 @@ if api_keys.gemini:
 class GeminiClient:
 
     def __init__(self):
-        self.model = genai.GenerativeModel(
-            model_selector.gemini()
-        )
-
-    def generate(self, prompt: str):
-
-        response = self.model.generate_content(prompt)
-
-        return response.text
+        self.model_name = model_selector.gemini()
+        self.model = genai.GenerativeModel(self.model_name)
 
     async def generate_content(
         self,
         prompt: str,
-        system_instruction: str = None,
+        category: str = "general",
+        system_instruction: str | None = None,
     ):
 
-        full_prompt = (
-            f"System Instruction: {system_instruction}\n\nPrompt: {prompt}"
-            if system_instruction
-            else prompt
-        )
+        if system_instruction:
+            prompt = f"{system_instruction}\n\n{prompt}"
 
-        return self.generate(full_prompt)
+        response = self.model.generate_content(prompt)
+
+        return {
+            "success": True,
+            "provider": "Gemini",
+            "category": category,
+            "content": response.text,
+        }
 
     def info(self):
         return {
             "provider": "Gemini",
-            "model": model_selector.gemini(),
+            "model": self.model_name,
             "api_key_loaded": bool(api_keys.gemini),
         }
 
