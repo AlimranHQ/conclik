@@ -1,10 +1,12 @@
 """
 Conclik Pilot AI
-Version : 5.4.0
+Version : 5.4.2
 Module : Security Manager
 """
 
 from app.security.validator import request_validator
+from app.security.firewall import firewall
+from app.security.threat_detector import threat_detector
 from app.security.auth import authentication
 from app.security.permissions import permission_manager
 from app.security.audit import audit_logger
@@ -12,21 +14,6 @@ from app.security.rate_limiter import rate_limiter
 
 
 class SecurityManager:
-
-    def validate(self, prompt: str) -> bool:
-        return request_validator.validate(prompt)
-
-    def authenticate(self) -> bool:
-        return authentication.authenticate()
-
-    def authorize(self, role: str = "user", action: str = "general") -> bool:
-        return permission_manager.has_permission(role, action)
-
-    def allow(self, identifier: str = "anonymous") -> bool:
-        return rate_limiter.allow(identifier)
-
-    def audit(self, event: str, source: str = "system"):
-        return audit_logger.log(event, source)
 
     def secure(
         self,
@@ -36,19 +23,27 @@ class SecurityManager:
         identifier: str = "anonymous",
     ) -> bool:
 
-        if not self.validate(prompt):
+        if not request_validator.validate(prompt):
             return False
 
-        if not self.authenticate():
+        if not firewall.inspect(prompt):
+            audit_logger.log("Firewall blocked request", "Firewall")
             return False
 
-        if not self.authorize(role, action):
+        if not threat_detector.detect(prompt):
+            audit_logger.log("Threat detected", "ThreatDetector")
             return False
 
-        if not self.allow(identifier):
+        if not authentication.authenticate():
             return False
 
-        self.audit("Security Check Passed", source="SecurityManager")
+        if not permission_manager.has_permission(role, action):
+            return False
+
+        if not rate_limiter.allow(identifier):
+            return False
+
+        audit_logger.log("Security check passed", "SecurityManager")
 
         return True
 
