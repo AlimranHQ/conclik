@@ -1,10 +1,11 @@
 """
 Conclik Pilot AI
-Version : 5.4.0
+Version : 7.0.0
 Module : AI Service
+Architecture : Intelligence Engine
 """
 
-from app.providers.gemini_client import gemini_client
+from app.core.intelligence.intelligence_engine import intelligence_engine
 from app.security.security_manager import security_manager
 
 
@@ -14,7 +15,8 @@ class AIService:
         self,
         prompt: str,
         category: str = "general",
-        provider: str = "auto",
+        provider: str = "gemini",
+        **kwargs,
     ):
 
         if not security_manager.secure(
@@ -28,10 +30,13 @@ class AIService:
                 "error": "Security validation failed",
             }
 
-        return await gemini_client.generate_content(
+        return await intelligence_engine.generate(
             prompt=prompt,
             category=category,
+            preferred_provider=provider,
+            **kwargs,
         )
 
 
 ai_service = AIService()
+

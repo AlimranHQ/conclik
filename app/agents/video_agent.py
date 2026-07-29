@@ -1,37 +1,79 @@
 """
-Conclik Pilot AI - Video Agent
-Version: 5.0.0
-Description: Generates scene-by-scene storyboards, B-Roll ideas, and video editing guidelines.
+Conclik Pilot AI
+Video Agent
+Version : 6.0.0
+Architecture : Base Agent
+Description : Generates storyboards and editing blueprints.
 """
 
-from app.providers.gemini_client import gemini_client
+from app.core.agents.base_agent import BaseAgent
 
-class VideoAgent:
-    async def create_storyboard(self, topic: str, script_data: str, voice_data: str) -> str:
+
+class VideoAgent(BaseAgent):
+
+    def __init__(self):
+        super().__init__(provider="gemini")
+
+    async def create_storyboard(
+        self,
+        topic: str,
+        script_data: str,
+        voice_data: str,
+    ) -> str:
+
         prompt = f"""
-        You are an expert Video Director and Professional Editor. Your task is to create a comprehensive scene-by-scene video storyboard and editing blueprint based on the provided script and voice guidelines.
-        
-        Topic: {topic}
+You are an expert Video Director and Professional Editor.
 
-        Script Content:
-        {script_data}
+Topic:
+{topic}
 
-        Voice Guidelines:
-        {voice_data}
+Script Content:
+{script_data}
 
-        Please provide:
-        1. Scene-by-Scene Breakdown (Scene number, visual description, on-screen text/captions).
-        2. B-Roll & Footage Suggestions (What visual clips or animations should appear).
-        3. Editing & Transition Styles (Cuts, zoom-ins, transitions, and pacing effects).
-        4. Visual FX / Graphics recommendations to boost viewer retention.
+Voice Guidelines:
+{voice_data}
 
-        Keep the output highly structured, practical, and production-ready.
-        """
-        
+Please provide:
+
+1. Scene-by-Scene Breakdown
+
+2. B-Roll Suggestions
+
+3. Editing & Transition Styles
+
+4. Visual FX / Graphics Recommendations
+
+Keep the output highly structured,
+practical,
+and production ready.
+"""
+
         try:
-            response = await gemini_client.generate_content(prompt)
-            return response
+
+            return await self.ask_ai(
+                prompt=prompt,
+                category="video",
+            )
+
         except Exception as e:
-            raise Exception(f"Video Agent Error: {str(e)}")
+
+            raise Exception(
+                f"Video Agent Error: {e}"
+            )
+
+    async def run(
+        self,
+        topic: str,
+        script_data: str,
+        voice_data: str,
+    ):
+
+        return await self.create_storyboard(
+            topic,
+            script_data,
+            voice_data,
+        )
+
 
 video_agent = VideoAgent()
+

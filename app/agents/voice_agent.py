@@ -1,34 +1,73 @@
 """
-Conclik Pilot AI - Voice Agent
-Version: 5.0.0
-Description: Generates voiceover guidelines, voice tones, pacing, and audio-friendly script cues.
+Conclik Pilot AI
+Voice Agent
+Version : 6.0.0
+Architecture : Base Agent
+Description : Generates professional voice guidelines.
 """
 
-from app.providers.gemini_client import gemini_client
+from app.core.agents.base_agent import BaseAgent
 
-class VoiceAgent:
-    async def create_voice_guideline(self, topic: str, script_data: str) -> str:
+
+class VoiceAgent(BaseAgent):
+
+    def __init__(self):
+        super().__init__(provider="gemini")
+
+    async def create_voice_guideline(
+        self,
+        topic: str,
+        script_data: str,
+    ) -> str:
+
         prompt = f"""
-        You are an expert Voiceover Director and Audio Content Producer. Your task is to design professional voiceover guidelines and pacing instructions based on the provided script.
-        
-        Topic: {topic}
+You are an expert Voiceover Director and Audio Content Producer.
 
-        Script Content:
-        {script_data}
+Topic:
+{topic}
 
-        Please provide:
-        1. Recommended Voice Tone & Mood (e.g., energetic, professional, emotional, authoritative).
-        2. Speaking Pacing & Tempo (Where to speed up, slow down, or pause for dramatic effect).
-        3. Pronunciation and Emphasis Cues (Keywords or terms that need special vocal stress).
-        4. Audio/Sound Effects (SFX) & Background Music suggestions to enhance the listening experience.
+Script Content:
+{script_data}
 
-        Keep the output structured, clear, and professional.
-        """
-        
+Please provide:
+
+1. Recommended Voice Tone & Mood
+
+2. Speaking Pacing & Tempo
+
+3. Pronunciation & Emphasis Cues
+
+4. Background Music & SFX Suggestions
+
+Keep the output structured,
+professional,
+and production ready.
+"""
+
         try:
-            response = await gemini_client.generate_content(prompt)
-            return response
+
+            return await self.ask_ai(
+                prompt=prompt,
+                category="voice",
+            )
+
         except Exception as e:
-            raise Exception(f"Voice Agent Error: {str(e)}")
+
+            raise Exception(
+                f"Voice Agent Error: {e}"
+            )
+
+    async def run(
+        self,
+        topic: str,
+        script_data: str,
+    ):
+
+        return await self.create_voice_guideline(
+            topic,
+            script_data,
+        )
+
 
 voice_agent = VoiceAgent()
+

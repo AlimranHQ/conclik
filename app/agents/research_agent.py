@@ -1,29 +1,56 @@
 """
-Conclik Pilot AI - Research Agent
-Version: 5.0.0
+Conclik Pilot AI
+Research Agent
+Version : 6.0.0
+Architecture : Base Agent
 """
 
-from app.providers.gemini_client import gemini_client
+from app.core.agents.base_agent import BaseAgent
 
-class ResearchAgent:
-    async def analyze(self, topic: str) -> str:
+
+class ResearchAgent(BaseAgent):
+
+    def __init__(self):
+        super().__init__(provider="gemini")
+
+    async def analyze(
+        self,
+        topic: str,
+    ) -> str:
+
         prompt = f"""
-        You are an expert Content Research Agent. Your task is to research the given topic thoroughly.
-        Topic: {topic}
+You are an expert Content Research Agent.
 
-        Please provide:
-        1. Key insights and core concepts.
-        2. Important sub-topics or trends.
-        3. Target audience interest points.
-        4. Reliable talking points for content creation.
+Topic:
+{topic}
 
-        Keep the response well-structured, clear, and professional.
-        """
-        
+Please provide:
+
+1. Key insights
+2. Important trends
+3. Audience interests
+4. Reliable talking points
+
+Keep the response professional.
+"""
+
         try:
-            response = await gemini_client.generate_content(prompt)
-            return response
+            return await self.ask_ai(
+                prompt=prompt,
+                category="research",
+            )
+
         except Exception as e:
-            raise Exception(f"Research Agent Error: {str(e)}")
+            raise Exception(
+                f"Research Agent Error: {e}"
+            )
+
+    async def run(
+        self,
+        topic: str,
+    ):
+        return await self.analyze(topic)
+
 
 research_agent = ResearchAgent()
+

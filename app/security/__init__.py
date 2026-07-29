@@ -1,20 +1,9 @@
-"""
-Conclik Pilot AI
-Security Package
-"""
+from passlib.context import CryptContext
 
-from app.security.auth import authentication
-from app.security.permissions import permission_manager
-from app.security.validator import request_validator
-from app.security.audit import audit_logger
-from app.security.rate_limiter import rate_limiter
-from app.security.security_manager import security_manager
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-__all__ = [
-    "authentication",
-    "permission_manager",
-    "request_validator",
-    "audit_logger",
-    "rate_limiter",
-    "security_manager",
-]
+def get_password_hash(password: str) -> str:
+    return pwd_context.hash(password)
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)

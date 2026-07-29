@@ -1,10 +1,12 @@
 """
 Conclik Pilot AI
 Thumbnail Service
+Version : 7.0.0
+Architecture : Intelligence Engine
 """
 
 from app.prompts.thumbnail_prompt import thumbnail_prompt
-from app.providers.gemini_client import gemini_client
+from app.core.intelligence.intelligence_engine import intelligence_engine
 
 
 class ThumbnailService:
@@ -13,10 +15,12 @@ class ThumbnailService:
 
         prompt = thumbnail_prompt(topic)
 
-        return await gemini_client.generate_content(
+        return await intelligence_engine.generate(
             prompt=prompt,
             category="thumbnail",
+            preferred_provider="gemini",
         )
 
 
 thumbnail_service = ThumbnailService()
+

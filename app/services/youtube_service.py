@@ -1,22 +1,27 @@
 """
 Conclik Pilot AI
 YouTube Service
+Version : 7.0.0
+Architecture : Intelligence Engine
 """
 
-from app.prompts.youtube_prompt import youtube_prompt
-from app.providers.gemini_client import gemini_client
+from app.core.intelligence.intelligence_engine import intelligence_engine
 
 
 class YouTubeService:
 
-    async def generate(self, topic: str):
+    async def generate(
+        self,
+        prompt: str,
+        category: str = "youtube",
+    ):
 
-        prompt = youtube_prompt(topic)
-
-        return await gemini_client.generate_content(
+        return await intelligence_engine.generate(
             prompt=prompt,
-            category="youtube",
+            category=category,
+            preferred_provider="gemini",
         )
 
 
 youtube_service = YouTubeService()
+

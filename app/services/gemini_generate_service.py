@@ -1,16 +1,26 @@
 """
 Conclik Pilot AI
-Version : 5.2.0
-Unified Gemini Generate Service
+Universal Generate Service
+Version : 7.0.0
 """
 
-from app.providers.gemini_client import gemini_client
+from app.core.intelligence.intelligence_engine import intelligence_engine
 
 
-class GeminiGenerateService:
+class GenerateService:
 
-    def generate(self, prompt: str):
-        return gemini_client.generate(prompt)
+    async def generate(
+        self,
+        prompt: str,
+        category: str = "general",
+    ):
+
+        return await intelligence_engine.generate(
+            prompt=prompt,
+            category=category,
+            preferred_provider="gemini",
+        )
 
 
-gemini_generate_service = GeminiGenerateService()
+generate_service = GenerateService()
+

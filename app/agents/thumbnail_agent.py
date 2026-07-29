@@ -1,37 +1,74 @@
 """
-Conclik Pilot AI - Thumbnail Agent
-Version: 5.0.0
-Description: Generates high-CTR thumbnail concepts, visual ideas, and image prompts.
+Conclik Pilot AI
+Thumbnail Agent
+Version : 6.0.0
+Architecture : Base Agent
+Description : Generates high-CTR thumbnail concepts.
 """
 
-from app.providers.gemini_client import gemini_client
+from app.core.agents.base_agent import BaseAgent
 
-class ThumbnailAgent:
-    async def design_concept(self, topic: str, research_data: str, script_data: str) -> str:
+
+class ThumbnailAgent(BaseAgent):
+
+    def __init__(self):
+        super().__init__(provider="gemini")
+
+    async def design_concept(
+        self,
+        topic: str,
+        research_data: str,
+        script_data: str,
+    ) -> str:
+
         prompt = f"""
-        You are an expert YouTube Thumbnail Designer and Visual Strategist. Your task is to design high-CTR thumbnail concepts based on the provided topic, research, and script.
-        
-        Topic: {topic}
-        
-        Research Summary:
-        {research_data}
+You are an expert YouTube Thumbnail Designer and Visual Strategist.
 
-        Script Content:
-        {script_data}
+Topic:
+{topic}
 
-        Please provide:
-        1. Thumbnail Visual Concepts (Provide 2-3 distinct design ideas with descriptions of imagery, background, and focal points).
-        2. Catchy On-Image Text / Overlay (Short, punchy 2-4 words text to grab attention).
-        3. Color Palette Suggestions (High contrast colors to stand out).
-        4. AI Image Generation Prompt (A detailed descriptive prompt if someone wants to generate it via DALL-E or Midjourney).
+Research Summary:
+{research_data}
 
-        Keep the output creative, structured, and practical.
-        """
-        
+Script Content:
+{script_data}
+
+Please provide:
+
+1. 2–3 Thumbnail Concepts
+
+2. Short On-Image Text
+
+3. Color Palette
+
+4. AI Image Prompt
+
+Keep the output creative,
+structured,
+and production ready.
+"""
+
         try:
-            response = await gemini_client.generate_content(prompt)
-            return response
+            return await self.ask_ai(
+                prompt=prompt,
+                category="thumbnail",
+            )
+
         except Exception as e:
-            raise Exception(f"Thumbnail Agent Error: {str(e)}")
+            raise Exception(f"Thumbnail Agent Error: {e}")
+
+    async def run(
+        self,
+        topic: str,
+        research_data: str,
+        script_data: str,
+    ):
+        return await self.design_concept(
+            topic,
+            research_data,
+            script_data,
+        )
+
 
 thumbnail_agent = ThumbnailAgent()
+

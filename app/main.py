@@ -6,6 +6,7 @@ Version : 5.0.0
 from fastapi import FastAPI
 
 from app.database import Base, engine
+from app.bootstrap.application_bootstrap import initialize_application
 
 from app.routers.auth import router as auth_router
 from app.routers.profile import router as profile_router
@@ -33,6 +34,9 @@ from app.routers.youtube import router as youtube_router
 from app.routers.agent_router import router as agent_router
 
 Base.metadata.create_all(bind=engine)
+
+# Initialize Conclik Platform
+initialize_application()
 
 app = FastAPI(
     title="Conclik Pilot AI",
@@ -77,3 +81,4 @@ def home():
         "version": "5.0.0",
         "status": "running"
     }
+

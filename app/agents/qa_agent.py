@@ -1,39 +1,91 @@
 """
-Conclik Pilot AI - QA (Quality Assurance) Agent
-Version: 5.0.0
-Description: Reviews all generated content across agents, checks for quality, consistency, and provides final polish.
+Conclik Pilot AI
+QA Agent
+Version : 6.0.0
+Architecture : Base Agent
+Description : Reviews the complete multi-agent pipeline.
 """
 
-from app.providers.gemini_client import gemini_client
+from app.core.agents.base_agent import BaseAgent
 
-class QAAgent:
-    async def review_quality(self, topic: str, all_outputs: dict) -> str:
+
+class QAAgent(BaseAgent):
+
+    def __init__(self):
+        super().__init__(provider="gemini")
+
+    async def review_quality(
+        self,
+        topic: str,
+        all_outputs: dict,
+    ) -> str:
+
         prompt = f"""
-        You are an expert Content Quality Assurance (QA) Director and Senior Editor. Your task is to review the complete multi-agent pipeline output for the given topic and ensure everything is cohesive, professional, and high-quality.
-        
-        Topic: {topic}
+You are an expert Content Quality Assurance Director
+and Senior Editor.
 
-        Pipeline Outputs to Review:
-        - Research: {all_outputs.get('research', {}).get('output', 'N/A')}
-        - Script: {all_outputs.get('script', {}).get('output', 'N/A')}
-        - SEO: {all_outputs.get('seo', {}).get('output', 'N/A')}
-        - Thumbnail: {all_outputs.get('thumbnail', {}).get('output', 'N/A')}
-        - Voice: {all_outputs.get('voice', {}).get('output', 'N/A')}
-        - Video: {all_outputs.get('video', {}).get('output', 'N/A')}
+Topic:
+{topic}
 
-        Please provide:
-        1. Overall Quality Score (Out of 10) and Summary.
-        2. Consistency Check (Do the script, SEO, and visual elements align well with the research?).
-        3. Constructive Feedback or Areas of Improvement for each section.
-        4. Final Approval Status (Ready for production or needs minor tweaks).
+Pipeline Outputs:
 
-        Keep the tone professional, objective, and expert-level.
-        """
-        
+Research:
+{all_outputs.get('research', {}).get('output', 'N/A')}
+
+Script:
+{all_outputs.get('script', {}).get('output', 'N/A')}
+
+SEO:
+{all_outputs.get('seo', {}).get('output', 'N/A')}
+
+Thumbnail:
+{all_outputs.get('thumbnail', {}).get('output', 'N/A')}
+
+Voice:
+{all_outputs.get('voice', {}).get('output', 'N/A')}
+
+Video:
+{all_outputs.get('video', {}).get('output', 'N/A')}
+
+Please provide:
+
+1. Overall Quality Score (/10)
+
+2. Consistency Check
+
+3. Improvement Suggestions
+
+4. Final Production Approval
+
+Keep the review objective,
+professional,
+and production ready.
+"""
+
         try:
-            response = await gemini_client.generate_content(prompt)
-            return response
+
+            return await self.ask_ai(
+                prompt=prompt,
+                category="qa",
+            )
+
         except Exception as e:
-            raise Exception(f"QA Agent Error: {str(e)}")
+
+            raise Exception(
+                f"QA Agent Error: {e}"
+            )
+
+    async def run(
+        self,
+        topic: str,
+        all_outputs: dict,
+    ):
+
+        return await self.review_quality(
+            topic,
+            all_outputs,
+        )
+
 
 qa_agent = QAAgent()
+

@@ -1,29 +1,26 @@
 """
 Conclik Pilot AI
 SEO Service
+Version : 7.0.0
+Architecture : Intelligence Engine
 """
 
-from app.providers.gemini_client import gemini_client
-from app.prompts.seo_prompt import YOUTUBE_SEO_PROMPT
+from app.core.intelligence.intelligence_engine import intelligence_engine
 
 
 class SEOService:
 
     async def generate(
         self,
-        topic: str,
-        language: str = "English",
+        prompt: str,
     ):
 
-        prompt = YOUTUBE_SEO_PROMPT.format(
-            topic=topic,
-            language=language,
-        )
-
-        return await gemini_client.generate_content(
+        return await intelligence_engine.generate(
             prompt=prompt,
             category="seo",
+            preferred_provider="gemini",
         )
 
 
 seo_service = SEOService()
+
