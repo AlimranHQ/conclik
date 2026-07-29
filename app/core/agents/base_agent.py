@@ -1,44 +1,17 @@
 """
-Conclik Pilot AI
-Base Agent
-Version : 1.0.0
+Conclik Base Agent
 """
 
 from abc import ABC, abstractmethod
 
-from app.core.intelligence.intelligence_engine import intelligence_engine
-
 
 class BaseAgent(ABC):
 
-    def __init__(
-        self,
-        provider: str = "gemini",
-    ):
-        self.provider = provider
-
-    async def ask_ai(
-        self,
-        prompt: str,
-        category: str = "general",
-        **kwargs,
-    ):
-
-        return await intelligence_engine.generate(
-            prompt=prompt,
-            category=category,
-            preferred_provider=self.provider,
-            **kwargs,
-        )
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        ...
 
     @abstractmethod
-    async def run(
-        self,
-        *args,
-        **kwargs,
-    ):
-        """
-        Every agent must implement this.
-        """
-        raise NotImplementedError
-
+    async def run(self, *args, **kwargs):
+        ...

@@ -1,25 +1,17 @@
 """
-Conclik Pilot AI
 Provider Bootstrap
-Version : 1.0.0
+Version : 2.1.0
 """
 
 from app.core.providers.provider_registry import provider_registry
+from app.core.providers.adapters.gemini_provider import gemini_provider
 
 
 def initialize_providers():
 
-    """
-    Register all AI providers here.
-
-    Example:
-
     provider_registry.register(gemini_provider)
 
-    provider_registry.register(openai_provider)
-
-    provider_registry.register(claude_provider)
-    """
-
-    return provider_registry
-
+    return {
+        "providers": provider_registry,
+        "status": "initialized",
+    }

@@ -1,24 +1,27 @@
 """
-Conclik Pilot AI
-Application Bootstrap
-Version : 1.0.0
+Conclik Application Bootstrap
+Version : 2.0.0
 """
 
+import asyncio
+
 from app.bootstrap.provider_bootstrap import initialize_providers
+from app.kernel.kernel_boot import boot
 
 
 def initialize_application() -> None:
     """
-    Initialize the entire Conclik platform.
+    Conclik Startup Sequence
 
-    Startup Order
-
-    1. Register Providers
-    2. Initialize Memory
-    3. Initialize Plugins
-    4. Initialize Agents
-    5. Initialize Workflows
+    1. Kernel
+    2. Providers
+    3. Memory
+    4. Plugins
+    5. Agents
+    6. Workflows
     """
+
+    asyncio.run(boot())
 
     initialize_providers()
 
@@ -28,6 +31,3 @@ def initialize_application() -> None:
     # initialize_agents()
     # initialize_workflows()
 
-
-if __name__ == "__main__":
-    initialize_application()

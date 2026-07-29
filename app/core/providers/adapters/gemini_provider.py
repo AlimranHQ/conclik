@@ -1,11 +1,11 @@
 """
 Conclik Pilot AI
 Gemini Provider Adapter
-Version : 2.0.0
+Version : 3.0.0
 """
 
 from app.core.providers.base_provider import BaseProvider
-from app.providers.gemini_client import gemini_client
+from app.core.providers.loaders.gemini_loader import load_gemini
 
 
 class GeminiProvider(BaseProvider):
@@ -21,7 +21,9 @@ class GeminiProvider(BaseProvider):
         **kwargs,
     ) -> str:
 
-        return await gemini_client.generate_content(
+        gemini = load_gemini()
+
+        return await gemini.generate_content(
             prompt=prompt,
             category=category,
         )
