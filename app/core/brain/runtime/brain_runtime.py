@@ -3,7 +3,7 @@ from app.core.brain.planner_engine import planner_engine
 from app.core.brain.task_planner_engine import task_planner_engine
 from app.core.brain.decision.decision_engine import decision_engine
 
-from app.core.brain.assignment.assignment_runtime import assignment_runtime
+from app.core.workflow_engine.workflow_engine import workflow_engine
 
 from app.core.brain.personality.personality_runtime import personality_runtime
 from app.core.brain.conversation.conversation_engine import conversation_engine
@@ -26,10 +26,10 @@ class BrainRuntime:
 
         decision = await decision_engine.run(goal)
 
-        assignment = await assignment_runtime.run(goal)
+        workflow = await workflow_engine.execute(goal)
 
         reflection = await reflection_runtime.run(
-            assignment["results"]
+            workflow["results"]
         )
 
         learning = await learning_runtime.run(reflection)
@@ -47,7 +47,7 @@ class BrainRuntime:
         await memory_runtime.remember(
             goal,
             {
-                "assignment": assignment,
+                "workflow": workflow,
                 "reflection": reflection,
                 "learning": learning,
                 "adaptive": adaptive,
@@ -62,7 +62,7 @@ class BrainRuntime:
             "graph": graph,
             "decision": decision,
 
-            "assignment": assignment,
+            "workflow": workflow,
 
             "reflection": reflection,
             "learning": learning,

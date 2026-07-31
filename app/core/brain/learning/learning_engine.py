@@ -5,7 +5,10 @@ class LearningEngine(BaseEngine):
 
     async def learn(self, reflection):
 
-        score = reflection.get("score", 0)
+        if "reflection" in reflection:
+            score = reflection["reflection"].get("score", 0)
+        else:
+            score = reflection.get("score", 0)
 
         if score >= 90:
             action = "keep_strategy"

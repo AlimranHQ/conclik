@@ -2,9 +2,9 @@ from app.core.brain.assignment.assignment_engine import assignment_engine
 from app.core.parallel_executor.parallel_executor import parallel_executor
 
 
-class AssignmentRuntime:
+class WorkflowEngine:
 
-    async def run(self, goal):
+    async def execute(self, goal):
 
         assignment = await assignment_engine.assign(goal)
 
@@ -13,10 +13,11 @@ class AssignmentRuntime:
         )
 
         return {
-            "status": "assignment_completed",
+            "status": "workflow_completed",
             "assignment": assignment,
             "execution": execution,
+            "results": execution["results"],
         }
 
 
-assignment_runtime = AssignmentRuntime()
+workflow_engine = WorkflowEngine()
