@@ -1,5 +1,6 @@
 from app.core.brain.assignment.assignment_engine import assignment_engine
-from app.core.parallel_executor.parallel_executor import parallel_executor
+from app.core.workflow_engine.rules.workflow_rules import workflow_rules
+from app.core.workflow_engine.scheduler.workflow_scheduler import workflow_scheduler
 
 
 class WorkflowEngine:
@@ -8,13 +9,18 @@ class WorkflowEngine:
 
         assignment = await assignment_engine.assign(goal)
 
-        execution = await parallel_executor.execute(
+        workflow = workflow_rules.apply(
             assignment["assignments"]
+        )
+
+        execution = await workflow_scheduler.execute(
+            workflow
         )
 
         return {
             "status": "workflow_completed",
             "assignment": assignment,
+            "workflow": workflow,
             "execution": execution,
             "results": execution["results"],
         }
