@@ -3,6 +3,7 @@ import asyncio
 from app.core.parallel_executor.parallel_executor import parallel_executor
 from app.core.agent_manager.agent_manager import agent_manager
 from app.core.workflow_engine.dependency.dependency_resolver import dependency_resolver
+from app.core.workflow_engine.retry.retry_policy import retry_policy
 
 
 class WorkflowScheduler:
@@ -37,24 +38,43 @@ class WorkflowScheduler:
                 if item["depends_on"]
             ]
 
+            #
+            # Parallel Tasks
+            #
             if parallel:
 
-                execution = await parallel_executor.execute(
-                    parallel
+                async def run_parallel(task):
+
+                    return await retry_policy.execute(
+                        lambda: agent_manager.execute(
+                            task["agent"],
+                            task["task"]
+                        ),
+                        retries=3,
+                    )
+
+                parallel_results = await asyncio.gather(
+                    *(run_parallel(task) for task in parallel)
                 )
 
-                for r, task in zip(execution["results"], parallel):
-                    results.append(r)
+                for task, result in zip(parallel, parallel_results):
+                    results.append(result)
                     completed.append(task["id"])
 
+            #
+            # Sequential Tasks
+            #
             for task in sequential:
 
-                r = await agent_manager.execute(
-                    task["agent"],
-                    task["task"]
+                result = await retry_policy.execute(
+                    lambda: agent_manager.execute(
+                        task["agent"],
+                        task["task"]
+                    ),
+                    retries=3,
                 )
 
-                results.append(r)
+                results.append(result)
                 completed.append(task["id"])
 
         return {
