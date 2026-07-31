@@ -2,18 +2,16 @@ from app.core.brain.goal_engine import goal_engine
 from app.core.brain.planner_engine import planner_engine
 from app.core.brain.task_planner_engine import task_planner_engine
 from app.core.brain.decision.decision_engine import decision_engine
-from app.core.brain.assignment.assignment_engine import assignment_engine
 
-from app.core.execution_coordinator.execution_runtime import execution_runtime
+from app.core.brain.assignment.assignment_runtime import assignment_runtime
 
-from app.core.reflection_engine.reflection_runtime import reflection_runtime
-
-from app.core.brain.learning.learning_runtime import learning_runtime
-from app.core.brain.adaptive.adaptive_runtime import adaptive_runtime
-
-from app.core.brain.memory.memory_runtime import memory_runtime
 from app.core.brain.personality.personality_runtime import personality_runtime
 from app.core.brain.conversation.conversation_engine import conversation_engine
+
+from app.core.brain.reflection.reflection_runtime import reflection_runtime
+from app.core.brain.learning.learning_runtime import learning_runtime
+from app.core.brain.adaptive.adaptive_runtime import adaptive_runtime
+from app.core.brain.memory.memory_runtime import memory_runtime
 
 
 class BrainRuntime:
@@ -28,13 +26,11 @@ class BrainRuntime:
 
         decision = await decision_engine.run(goal)
 
-        assignment = await assignment_engine.run(goal)
+        assignment = await assignment_runtime.run(goal)
 
-        execution = await execution_runtime.run(
-            assignment["assignments"]
+        reflection = await reflection_runtime.run(
+            assignment["results"]
         )
-
-        reflection = await reflection_runtime.run(execution)
 
         learning = await learning_runtime.run(reflection)
 
@@ -42,21 +38,21 @@ class BrainRuntime:
             learning["learning"]
         )
 
+        personality = await personality_runtime.run(goal)
+
+        conversation = await conversation_engine.run(goal)
+
         memory = await memory_runtime.recall(goal)
 
         await memory_runtime.remember(
             goal,
             {
-                "execution": execution,
+                "assignment": assignment,
                 "reflection": reflection,
                 "learning": learning,
                 "adaptive": adaptive,
             }
         )
-
-        personality = await personality_runtime.run(goal)
-
-        conversation = await conversation_engine.run(goal)
 
         return {
             "status": "brain_ready",
@@ -65,9 +61,8 @@ class BrainRuntime:
             "plan": plan,
             "graph": graph,
             "decision": decision,
-            "assignment": assignment,
 
-            "execution": execution,
+            "assignment": assignment,
 
             "reflection": reflection,
             "learning": learning,

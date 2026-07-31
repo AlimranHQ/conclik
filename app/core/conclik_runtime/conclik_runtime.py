@@ -1,11 +1,16 @@
-from app.core.conclik_runtime.conclik_executor import conclik_executor
+from app.core.runtime_orchestrator.runtime_orchestrator import runtime_orchestrator
 
 
 class ConclikRuntime:
 
     async def run(self, goal):
 
-        return await conclik_executor.execute(goal)
+        runtime = await runtime_orchestrator.run(goal)
+
+        return {
+            "status": "conclik_ready",
+            "runtime": runtime,
+        }
 
 
 conclik_runtime = ConclikRuntime()

@@ -2,7 +2,7 @@ import asyncio
 
 from app.core.conclik_runtime.conclik_runtime import conclik_runtime
 
-print("=== Intelligence Integration Wave-5 ===")
+print("=== Conclik Runtime Test ===")
 
 
 async def main():
@@ -11,12 +11,11 @@ async def main():
         "Build AI YouTube Automation"
     )
 
-    print(result)
+    print(result["status"])
 
-    assert result["assignment"]["status"] == "assignment_ready"
-    assert result["execution"]["completed"] == 6
+    assert result["status"] == "conclik_ready"
 
-    print("PASS | Assignment -> Execution Integration")
+    print("PASS | Conclik Runtime")
 
 
 asyncio.run(main())

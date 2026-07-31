@@ -1,31 +1,21 @@
-"""
-Agent Runtime
-Version: 2.0.0
-"""
-
-from app.core.agent_runtime.agent_manager import agent_manager
-from app.core.agent_runtime.agent_executor import agent_executor
+from app.core.runtime_tools.router.tool_router import tool_router
 
 
 class AgentRuntime:
 
-    async def run(self, agent_or_name, *args, **kwargs):
+    async def execute(self, agent: str, task: str):
 
-        if isinstance(agent_or_name, str):
-            agent = agent_manager.load(agent_or_name)
+        if agent == "research_agent":
 
-            if agent is None:
-                raise RuntimeError(
-                    f"Unknown agent: {agent_or_name}"
-                )
-        else:
-            agent = agent_or_name
+            return await tool_router.execute(
+                "terminal",
+                f"echo Research: {task}"
+            )
 
-        return await agent_executor.execute(
-            agent,
-            *args,
-            **kwargs,
-        )
+        return {
+            "status": "unknown_agent",
+            "agent": agent,
+        }
 
 
 agent_runtime = AgentRuntime()
