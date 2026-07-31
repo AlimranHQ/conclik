@@ -1,13 +1,7 @@
-"""
-Conclik Pilot AI
-Universal Generate Service
-Version : 7.0.0
-"""
-
 from app.core.intelligence.intelligence_engine import intelligence_engine
 
 
-class GenerateService:
+class GeminiGenerateService:
 
     async def generate(
         self,
@@ -22,5 +16,4 @@ class GenerateService:
         )
 
 
-generate_service = GenerateService()
-
+gemini_generate_service = GeminiGenerateService()
