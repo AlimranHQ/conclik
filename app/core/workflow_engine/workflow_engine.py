@@ -1,6 +1,6 @@
 from app.core.brain.assignment.assignment_engine import assignment_engine
 from app.core.workflow_engine.rules.workflow_rules import workflow_rules
-from app.core.workflow_engine.scheduler.workflow_scheduler import workflow_scheduler
+from app.core.workflow_engine.workflow_runtime import workflow_runtime
 
 
 class WorkflowEngine:
@@ -13,7 +13,7 @@ class WorkflowEngine:
             assignment["assignments"]
         )
 
-        execution = await workflow_scheduler.execute(
+        execution = await workflow_runtime.run(
             workflow
         )
 

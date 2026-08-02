@@ -1,0 +1,41 @@
+./app/core/conclik_runtime/conclik_runtime.py:11:            "status": "conclik_ready",
+./app/core/conclik_runtime/conclik_runtime.py:16:conclik_runtime = ConclikRuntime()
+./app/core/conclik_runtime/conclik_executor.py:31:conclik_executor = ConclikExecutor()
+./tests/integration/agent_runtime_test.py:10:        return "hello conclik"
+./tests/integration/agent_runtime_test.py:19:assert result == "hello conclik"
+./tests/conclik_runtime/conclik_runtime_test.py:3:from app.core.conclik_runtime.conclik_runtime import conclik_runtime
+./tests/conclik_runtime/conclik_runtime_test.py:10:    result = await conclik_runtime.run(
+./tests/conclik_runtime/conclik_runtime_test.py:16:    assert result["status"] == "conclik_ready"
+./tests/events/parallel_collaboration_test.py:25:        source="conclik",
+./.git/config:7:	url = https://github.com/AlimranHQ/conclik.git
+./.git/FETCH_HEAD:1:f07434600388b43151c9f0a640ae50dd78bc2c78		branch 'main' of https://github.com/AlimranHQ/conclik
+./.git/packed-refs:12:8697759009d5668a982564558889cd882bd77382 refs/tags/conclik-core-v1.0
+./.git/packed-refs:13:dfcddca8f3b13f5f3b2c93a083db27f5a356a946 refs/tags/conclik-workflow-v1.0
+./docs/PROJECT_CONTEXT.md:66:conclik-core-v1.0
+./.venv/bin/pip:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/pip3:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/pip3.14:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/activate:44:        VIRTUAL_ENV=$(cygpath /data/data/com.termux/files/home/conclik_old/.venv)
+./.venv/bin/activate:49:        export VIRTUAL_ENV=/data/data/com.termux/files/home/conclik_old/.venv
+./.venv/bin/activate.fish:36:set -gx VIRTUAL_ENV /data/data/com.termux/files/home/conclik_old/.venv
+./.venv/bin/activate.csh:12:setenv VIRTUAL_ENV /data/data/com.termux/files/home/conclik_old/.venv
+./.venv/bin/websockets:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/dotenv:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/idna:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/distro:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/normalizer:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/uvicorn:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/pyrsa-decrypt:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/pyrsa-encrypt:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/pyrsa-keygen:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/pyrsa-priv2pub:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/pyrsa-sign:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/pyrsa-verify:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/mako-render:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/cffi-gen-src:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/httpx:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/alembic:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/fastapi:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/bin/email_validator:1:#!/data/data/com.termux/files/home/conclik_old/.venv/bin/python3
+./.venv/pyvenv.cfg:5:command = /usr/bin/python3 -m venv /data/data/com.termux/files/home/conclik_old/.venv
+./PROJECT_CONTEXT.md:66:conclik-core-v1.0

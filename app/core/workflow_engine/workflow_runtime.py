@@ -5,11 +5,14 @@ class WorkflowRuntime:
 
     async def run(self, workflow):
 
-        executed = await workflow_executor.execute(workflow)
+        execution = await workflow_executor.execute(workflow)
 
         return {
-            "workflow": executed,
-            "steps": len(executed),
+            "status": execution.status,
+            "completed": execution.completed,
+            "failed": execution.failed,
+            "results": execution.results,
+            "total_steps": len(execution.results),
         }
 
 

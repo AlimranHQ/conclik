@@ -1,0 +1,14 @@
+{"type": "research_completed", "source": "research_agent", "payload": {"goal": "AI Automation"}}
+{"type": "research_completed", "source": "research_agent", "payload": {"goal": "AI Automation"}}
+{"type": "script_completed", "source": "script_agent", "payload": {"status": "completed", "agent": "script_agent", "goal": "AI Automation", "research": null, "result": "Script completed for: AI Automation"}}
+{"type": "research_completed", "source": "research_agent", "payload": {"goal": "AI Automation"}}
+{"type": "script_completed", "source": "script_agent", "payload": {"status": "completed", "agent": "script_agent", "goal": "AI Automation", "research": null, "result": "Script completed for: AI Automation"}}
+{"type": "script_completed", "source": "script_agent", "payload": {"goal": "AI Automation"}}
+{"type": "seo_completed", "source": "seo_agent", "payload": {"goal": "AI Automation"}}
+{"type": "seo_completed", "source": "seo_agent", "payload": {"goal": "AI Automation"}}
+{"type": "thumbnail_completed", "source": "thumbnail_agent", "payload": {"goal": "AI Automation"}}
+{"type": "thumbnail_completed", "source": "thumbnail_agent", "payload": {"goal": "AI Automation"}}
+{"type": "voice_completed", "source": "voice_agent", "payload": {"goal": "AI Automation"}}
+{"type": "voice_completed", "source": "voice_agent", "payload": {"goal": "AI Automation"}}
+{"type": "video_completed", "source": "video_agent", "payload": {"goal": "AI Automation"}}
+{"type": "video_completed", "source": "video_agent", "payload": {"goal": "AI Automation"}}

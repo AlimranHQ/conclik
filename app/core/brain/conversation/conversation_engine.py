@@ -1,36 +1,37 @@
-from app.core.kernel.base_engine import BaseEngine
+from app.core.brain.context.context_builder import context_builder
+from app.core.brain.conversation.memory.conversation_memory import (
+    conversation_memory,
+)
 
-from app.core.brain.personality.personality_runtime import personality_runtime
-from app.core.brain.memory.memory_runtime import memory_runtime
-from app.core.reflection_engine.reflection_runtime import reflection_runtime
 
+class ConversationEngine:
 
-class ConversationEngine(BaseEngine):
+    async def run(self, goal):
 
-    async def respond(self, goal: str):
+        context = await context_builder.build(goal)
 
-        personality = await personality_runtime.run(goal)
-
-        memory = await memory_runtime.recall(goal)
-
-        reflection = await reflection_runtime.run(True)
-
-        return {
+        response = {
             "status": "response_ready",
-            "identity": personality["personality"]["identity"],
-            "emotion": personality["emotion"],
-            "memory": memory,
-            "reflection": reflection,
-            "response":
-                f"[{personality['emotion']}] "
-                f"I am {personality['personality']['name']}.\n"
-                f"I remember previous context.\n"
-                f"Reflection: {reflection['reflection']}\n"
-                f"Ready to execute: {goal}",
+            "goal": goal,
+            "context": context,
+            "response": (
+                f"Ready to execute: {goal}\n"
+                f"Conversation Memory: {context['conversation_count']}\n"
+                f"Long Memory: {context['memory_count']}"
+            ),
         }
 
-    async def run(self, goal: str):
-        return await self.respond(goal)
+        await conversation_memory.remember(
+            "user",
+            goal,
+        )
+
+        await conversation_memory.remember(
+            "assistant",
+            response["response"],
+        )
+
+        return response
 
 
 conversation_engine = ConversationEngine()

@@ -1,10 +1,20 @@
-class ThumbnailAgent:
-    async def run(self, goal):
+from app.core.agents.base_agent import BaseAgent
+
+
+class ThumbnailAgent(BaseAgent):
+
+    @property
+    def name(self) -> str:
+        return "thumbnail_agent"
+
+    async def run(self, goal: str):
+
         return {
             "status": "completed",
-            "agent": "thumbnail_agent",
+            "agent": self.name,
             "goal": goal,
             "result": f"Thumbnail completed for: {goal}",
         }
+
 
 thumbnail_agent = ThumbnailAgent()

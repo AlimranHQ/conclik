@@ -1,21 +1,34 @@
-from app.core.runtime_tools.router.tool_router import tool_router
+"""
+Conclik Agent Runtime V3
+"""
+
+import app.core.agents
+
+from app.core.agent_runtime.agent_registry import agent_registry
+from app.core.collaboration.workspace.shared_workspace import shared_workspace
 
 
 class AgentRuntime:
 
     async def execute(self, agent: str, task: str):
 
-        if agent == "research_agent":
+        runtime_agent = agent_registry.get(agent)
 
-            return await tool_router.execute(
-                "terminal",
-                f"echo Research: {task}"
-            )
+        if runtime_agent is None:
+            return {
+                "status": "unknown_agent",
+                "agent": agent,
+                "task": task,
+            }
 
-        return {
-            "status": "unknown_agent",
-            "agent": agent,
-        }
+        result = await runtime_agent.run(task)
+
+        await shared_workspace.write(
+            agent,
+            result,
+        )
+
+        return result
 
 
 agent_runtime = AgentRuntime()

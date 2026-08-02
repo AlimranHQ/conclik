@@ -1,36 +1,51 @@
-from app.core.persistent_memory.memory_runtime import memory_runtime as persistent_memory_runtime
+from app.core.memory.schema.memory_schema import MemoryRecord
+from app.core.memory.index.memory_index import memory_index
 
 
 class MemoryRuntime:
 
-    async def remember(self, key, value):
+    def __init__(self):
+        self._memory = {}
 
-        try:
-            await persistent_memory_runtime.remember(
-                key,
-                value
-            )
-            return True
+    async def remember(self, goal, data):
 
-        except Exception:
-            return False
+        record = MemoryRecord(
+            goal=goal,
+            workflow=data.get("workflow", {}),
+            reflection=data.get("reflection", {}),
+            learning=data.get("learning", {}),
+            adaptive=data.get("adaptive", {}),
+            metadata=data.get("metadata", {}),
+        )
 
+        self._memory[goal] = record
 
-    async def recall(self, goal: str):
+        memory_index.add(goal, record.__dict__)
 
-        try:
-            memory = await persistent_memory_runtime.recall(
-                goal
-            )
+        return {
+            "status": "memory_saved",
+            "goal": goal,
+        }
 
-        except Exception:
-            memory = {}
+    async def recall(self, goal):
+
+        record = self._memory.get(goal)
+
+        if record is None:
+            return {
+                "status": "memory_ready",
+                "memory": {},
+                "goal": goal,
+            }
 
         return {
             "status": "memory_ready",
-            "memory": memory or {},
+            "memory": record.__dict__,
             "goal": goal,
         }
+
+    async def search(self, query):
+        return memory_index.search(query)
 
 
 memory_runtime = MemoryRuntime()

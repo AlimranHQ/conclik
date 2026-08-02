@@ -1,22 +1,64 @@
+"""
+Conclik Workflow Rules V4
+"""
+
+from app.core.workflow_engine.workflow import (
+    Workflow,
+    WorkflowTask,
+)
+
+
 class WorkflowRules:
+
 
     def apply(self, assignments):
 
-        sequential = []
-        parallel = []
+        workflow = Workflow(
+            name="Conclik Workflow",
+            mode="sequential",
+            metadata={
+                "version": "V4"
+            }
+        )
 
-        for item in assignments:
 
-            if item["depends_on"]:
-                sequential.append(item)
+        for index, item in enumerate(assignments, start=1):
 
-            else:
-                parallel.append(item)
+            task_mode = (
+                "sequential"
+                if item.get("depends_on")
+                else "parallel"
+            )
 
-        return {
-            "parallel": parallel,
-            "sequential": sequential,
-        }
+
+            task = WorkflowTask(
+
+                id=index,
+
+                name=item.get(
+                    "task",
+                    "unknown"
+                ),
+
+                agent=item.get(
+                    "agent"
+                ),
+
+                mode=task_mode,
+
+                depends_on=item.get(
+                    "depends_on",
+                    []
+                )
+
+            )
+
+
+            workflow.add_task(task)
+
+
+        return workflow
+
 
 
 workflow_rules = WorkflowRules()

@@ -2,7 +2,7 @@ import asyncio
 
 from app.core.conclik_runtime.conclik_runtime import conclik_runtime
 
-print("=== Conclik Runtime Test ===")
+print("=== AI Runtime Test ===")
 
 
 async def main():
@@ -13,9 +13,9 @@ async def main():
 
     print(result["status"])
 
-    assert result["status"] == "conclik_ready"
+    assert result["status"] == "runtime_ready"
 
-    print("PASS | Conclik Runtime")
+    print("PASS | AI Runtime")
 
 
 asyncio.run(main())

@@ -5,6 +5,10 @@ from app.core.brain.decision.decision_engine import decision_engine
 
 from app.core.workflow_engine.workflow_engine import workflow_engine
 
+from app.core.collaboration.pipeline.agent_pipeline import (
+    agent_pipeline,
+)
+
 from app.core.brain.personality.personality_runtime import personality_runtime
 from app.core.brain.conversation.conversation_engine import conversation_engine
 
@@ -28,6 +32,8 @@ class BrainRuntime:
 
         workflow = await workflow_engine.execute(goal)
 
+        pipeline = await agent_pipeline.run(goal)
+
         reflection = await reflection_runtime.run(
             workflow["results"]
         )
@@ -48,6 +54,7 @@ class BrainRuntime:
             goal,
             {
                 "workflow": workflow,
+                "pipeline": pipeline,
                 "reflection": reflection,
                 "learning": learning,
                 "adaptive": adaptive,
@@ -63,6 +70,7 @@ class BrainRuntime:
             "decision": decision,
 
             "workflow": workflow,
+            "pipeline": pipeline,
 
             "reflection": reflection,
             "learning": learning,
