@@ -1,13 +1,12 @@
 import asyncio
 
-from app.core.conclik_runtime.conclik_runtime import conclik_runtime
+from app.core.ai_runtime import ai_runtime
 
 print("=== AI Runtime Test ===")
 
 
 async def main():
-
-    result = await conclik_runtime.run(
+    result = await ai_runtime.run(
         "Build AI YouTube Automation"
     )
 
